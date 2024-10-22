@@ -1,28 +1,7 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
-
-import { fetchMovieDetails } from "../../fetchApi";
-
 import css from "./MovieCard.module.css";
 
-const MovieCard = () => {
-  const { movieId } = useParams();
-  const [movieDetails, setMovieDetails] = useState({});
+const MovieCard = ({ movieDetails }) => {
   const release_date = new Date(movieDetails.release_date);
-
-  useEffect(() => {
-    const getMovieDetails = async () => {
-      try {
-        const data = await fetchMovieDetails(movieId);
-        setMovieDetails(data);
-      } catch (error) {
-        console.error(error);
-        toast.error("Something went wrong. You can try again later");
-      }
-    };
-    getMovieDetails();
-  }, [movieId]);
 
   return (
     <div className={css.wrapper}>
@@ -46,8 +25,6 @@ const MovieCard = () => {
             })}
         </ul>
       </div>
-
-      <Toaster />
     </div>
   );
 };

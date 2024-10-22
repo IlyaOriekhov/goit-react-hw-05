@@ -1,29 +1,7 @@
-import { Link, Outlet, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
-
-import { fetchMovieDetails } from "../../fetchApi";
-
+import { Link, Outlet } from "react-router-dom";
 import css from "./MovieDetailsPage.module.css";
 
-const MovieDetails = () => {
-  const { movieId } = useParams();
-  const [movieDetails, setMovieDetails] = useState(null);
-
-  useEffect(() => {
-    const getMovieDetails = async () => {
-      try {
-        const data = await fetchMovieDetails(movieId);
-        setMovieDetails(data);
-      } catch (error) {
-        console.error(error);
-        toast.error("Something went wrong. You can try again later");
-      }
-    };
-
-    getMovieDetails();
-  }, [movieId]);
-
+const MovieDetails = ({ movieDetails }) => {
   return (
     <div className={css.wrapper}>
       {movieDetails && (
@@ -43,7 +21,6 @@ const MovieDetails = () => {
         </li>
       </ul>
       <Outlet />
-      <Toaster />
     </div>
   );
 };
