@@ -11,11 +11,8 @@ const MovieDetailsPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // useRef з location.state
   const locationStateRef = useRef(location.state);
-
-  useEffect(() => {
-    locationStateRef.current = location.state;
-  }, [location.state]);
 
   const [movieDetails, setMovieDetails] = useState(null);
 
@@ -33,7 +30,8 @@ const MovieDetailsPage = () => {
   }, [movieId]);
 
   const handleGoBack = () => {
-    navigate("/", { state: locationStateRef.current });
+    // Поправка
+    navigate(locationStateRef.current?.from ?? "/");
   };
 
   return (
