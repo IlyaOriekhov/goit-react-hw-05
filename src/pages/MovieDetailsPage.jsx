@@ -29,9 +29,9 @@ const MovieDetailsPage = () => {
     getMovieDetails();
   }, [movieId]);
 
+  //current
   const handleGoBack = () => {
-    // Поправка
-    navigate(locationStateRef.current?.from ?? "/");
+    navigate(locationStateRef.current ?? "/");
   };
 
   return (
