@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
 import { fetchMovieDetails } from "../fetchApi";
@@ -9,7 +9,14 @@ import MovieDetails from "../components/MovieDetailsPage/MovieDetailsPage";
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const location = useLocation();
-  const backLink = location.state?.from || "/movies";
+  const navigate = useNavigate();
+
+  const locationStateRef = useRef(location.state);
+
+  useEffect(() => {
+    locationStateRef.current = location.state;
+  }, [location.state]);
+
   const [movieDetails, setMovieDetails] = useState(null);
 
   useEffect(() => {
@@ -25,11 +32,15 @@ const MovieDetailsPage = () => {
     getMovieDetails();
   }, [movieId]);
 
+  const handleGoBack = () => {
+    navigate("/", { state: locationStateRef.current });
+  };
+
   return (
     <div>
-      <Link to={backLink}>
-        <button type="button">Go Back</button>
-      </Link>
+      <button type="button" onClick={handleGoBack}>
+        Go Back
+      </button>
       {movieDetails && <MovieCard movieDetails={movieDetails} />}
       {movieDetails && <MovieDetails movieDetails={movieDetails} />}
       <Toaster />
